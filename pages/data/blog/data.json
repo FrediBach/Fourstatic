@@ -1,0 +1,18 @@
+[
+	{
+		"date": "2013-04-26",
+		"author": "Fredi Bach",
+		"title": "Next Steps",
+		"short": "Read about the next steps concerning the development of Fourstatic.",
+		"content-file": "next-steps.md",
+		"slug": "next-steps"
+	},
+	{
+		"date": "2013-04-26",
+		"author": "Fredi Bach",
+		"title": "First Release",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "first-release"
+	}
+]

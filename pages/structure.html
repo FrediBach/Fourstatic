@@ -1,0 +1,82 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+	
+	<h2>Structure:</h2>
+	<p>
+		The best way to get most out of your Fourststic website is by structuring your files perfectly. Here's one
+		way to do that, that I used with this website. It should give you an idea how to do it:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+pages/
+
+	css/
+		normalize.css
+		main.css
+		
+	img/
+		logo.png
+		
+	js/
+		main.js
+		
+	data.json
+	data/
+		blog/
+			img/
+				sample.jpg
+			data.json
+			first-release.md
+			next-steps.md
+		nav.json
+		
+	includes/
+		navigation.html
+		
+	macros/
+		jkit-accordion.html
+		
+	themes/
+		default.html
+		special.html
+		html5-boilerplate.html
+		
+	index.html
+	blog.html
+	
+	docs/
+		tutorial1.html
+		...
+{% endfilter %}</pre>
+
+	<p>
+		First we have our three media directories: "css", "img" and "js". They should be known to you from your own static webpages.
+		The main difference here is that you can put SASS and LESS files into the "css" directory and CoffeeScript files into the "js"
+		directory.
+	</p>
+	
+	<p>
+		Then we have the various ways to store your data. The data.json file is a great place to stor simple data that is used on most of your pages.
+		The "data" directory contains a "blog" directory that conatins all blog data, including images and Markdown files that are used for the content.
+		The nav.json file contains our internal navigation entries.
+	</p>
+	
+	<p>
+		Next we have three directories that contain templates, themes and template macros. There you define basic structures you use in your different
+		pages. If you look into the themes directory, you see that we first create a basic HTML5 boilerplate and than extend that to create our
+		different fully featured themes.
+	</p>
+	
+	<p>
+		Lastly we have our HTML files that use all the themes, templates and media we organized in our other directories and files. You can create a
+		directory structure for your HTML files as is indicated with the "docs" directory. Thanks to the automatic relative urls Fourstatic uses, this
+		doesn't add further issues. You can even overwrite other files and data inside a subdirectory by using the same names and data keys.
+	</p>
+	
+	<p>
+		This is of course only one way to store your different files, Fourstatic is very flexible and lets you more or less store them however 
+		you want.
+	</p>
+	
+{% endblock %}

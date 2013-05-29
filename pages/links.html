@@ -1,0 +1,19 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+	
+	<h2>Links:</h2>
+	<p>
+		Fourstatic uses quite a few third party technologies to make everything work smoothly and to 
+		give you the option to work with the tools you know.
+	</p>
+	
+    {% for item in data.links|where_visible_is_1 %}
+	<p>
+		<a href="{{ item.url }}">{{ item.title }}</a>
+		<br />
+		{{ item.desc }}
+    </p>
+	{% endfor %}
+	
+{% endblock %}

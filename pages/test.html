@@ -1,0 +1,13 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+	
+	<p>
+	{% if exists('img/noise.png') %}
+		<img src="{{ resource('img/noise.png') }}">
+	{% else %}
+		Image not found!
+	{% endif %}
+	</p>
+	
+{% endblock %}

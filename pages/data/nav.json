@@ -1,0 +1,9 @@
+[
+	{ "url": "index.html", "title": "Home" },
+	{ "url": "download.html", "title": "Download" },
+	{ "url": "basics.html", "title": "Basics" },
+	{ "url": "structure.html", "title": "Structure" },
+	{ "url": "blog.html", "title": "Blog" },
+	{ "url": "tweets.html", "title": "Tweets" },
+	{ "url": "links.html", "title": "Links" }
+]

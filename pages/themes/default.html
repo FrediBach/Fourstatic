@@ -1,0 +1,63 @@
+{% extends "themes/html5-boilerplate.html" %}
+
+{% block title %}Fourstatic{% endblock %}
+{% block description %}Fourstatic helps you create static webpages that rule! It's a no-cms solution based on the Twig templating engine. We created something super simple and lightweight, that makes your work so much easier.{% endblock %}
+
+{% block stylesheets %}
+	
+	{{ parent() }}
+
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption' rel='stylesheet' type='text/css'>
+	<link href="{{ resource('js/google-code-prettify/prettify.css') }}" type="text/css" rel="stylesheet" />
+	
+	<link rel="stylesheet" href="{{ resource('css/main.scss') }}">
+	
+{% endblock %}
+
+{% block content %}
+	<div id="container">
+		<div id="content">
+			<div id="logo">
+        		<img src="{{ resource('img/fourstatic_logo_color.png') }}">
+				<h1>FOURSTATIC</h1>
+				<p>Feature injection for static pages!</p>
+			</div>
+			<hr>
+			
+			{% block textcontent %}{% endblock %}
+			
+		</div>
+	</div>
+	<div id="footercontainer">
+		<div id="footer">
+			{% block footer %}a project by <a href="http://fredibach.ch/" target="_blank">Fredi Bach</a>{% endblock %}
+		</div>
+	</div>
+	<div id="navigation">
+		{% include "includes/navigation.html" %}
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	
+	<script type="text/javascript" src="{{ resource('js/google-code-prettify/prettify.js') }}"></script>
+	
+	{{ parent() }}
+
+	<script src="{{ resource('js/jquery.jkit.autoload.1.2.16.min.js') }}"></script>
+	<script src="{{ resource('js/main.js') }}"></script>
+
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-41133292-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+{% endblock %}

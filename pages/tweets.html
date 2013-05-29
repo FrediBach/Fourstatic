@@ -1,0 +1,15 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+		
+	<h2>Tweets:</h2>
+	
+	{% for item in data.tweets %}
+	<p>
+		{{ item.text }}
+		<br />
+		<small>{{ item.created_at }}</small>
+    </p>
+	{% endfor %}
+	
+{% endblock %}

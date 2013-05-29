@@ -1,0 +1,50 @@
+[
+	{ 
+		"url": "http://twig.sensiolabs.org/", 
+		"title": "Twig",
+		"desc": "The templating engine that makes a lot of Fourstatics features possible.",
+		"visible": "1"
+	},
+	{ 
+		"url": "http://www.json.org/", 
+		"title": "JSON",
+		"desc": "A great way to store data, with small filesizes and universally usable.",
+		"visible": "1"
+	},
+	{ 
+		"url": "http://www.yaml.org/", 
+		"title": "YAML",
+		"desc": "Makes even smaller files possible than JSON, but isn't quite as universally usable.",
+		"visible": "1"
+	},
+	{ 
+		"url": "http://sass-lang.com/", 
+		"title": "SASS",
+		"desc": "Makes CSS so much more enjoyable, with things like variables and mixins.",
+		"visible": "1"
+	},
+	{ 
+		"url": "http://lesscss.org/", 
+		"title": "LESS",
+		"desc": "An alternative to SASS that has a similar popularity and set of features.",
+		"visible": "1"
+	},
+	{ 
+		"url": "http://daringfireball.net/projects/markdown/", 
+		"title": "Markdown",
+		"desc": "Very easy markup language that is converted to HTML.",
+		"visible": "1"
+	},
+	{ 
+		"url": "http://jquery-jkit.com/", 
+		"title": "jKit",
+		"desc": "A very easy to use and feature rich frontend toolkit, based on jQuery.",
+		"visible": "1"
+	},
+	{ 
+		"url": "http://fredibach.ch/", 
+		"title": "Fredi Bach",
+		"desc": "My personal blog (in German).",
+		"visible": "1"
+	}
+]

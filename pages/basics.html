@@ -1,0 +1,264 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+	
+	<h2>Basics:</h2>
+	<p>
+		Learn how easy it is to build a website with Fourstatic. The idea of Fourstatic is to make building static
+		websites much easier. To make that possible, Fourstatic handles all of your HTML pages as if they were Twig
+		templates, as known from the Symfony 2 PHP framework. Additionally, Fourstatic adds a data storage solution that supplies Twig with data to work on. 
+		This way you can store data separately to your HTML, almost like a separation of MVC (model, view and controler)
+		in a traditional framework, where Fourstatic plays the role of the controler.
+	</p>
+	
+	<h2>Twig:</h2>
+	
+	<p>
+		<a href="http://twig.sensiolabs.org/" target="_blank">Twig</a> is the templating engine built and used by the Symfony guys.
+		All features of Twig are available in Fourstatic. This means that you can use features like template inheritance, includes, 
+		macros, loops and much more inside your HTML. If you ever worked with templates, you know how useful such features are, and
+		now you have them available inside your HTML files! The most important thing you get out of this, is a huge reduction of
+		dublicated markup. You could for example create a template that acts as a theme that defines the structure of your HTML and
+		than on your various pages extend that template to fill it with individual content, making changes on the overall design as 
+		simple as editing that theme and not all of your files.
+	</p>
+	
+	<h2>Dynamic relative paths:</h2>
+	
+	<p>
+		For themes to be really universally usable, Fourstatic adds a special function to Twig that makes working with relative paths really simple.
+		No matter if your template is used in a subdirectory or not, your relative paths will match the resource. Here's how that works:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+<link rel="stylesheet" href="{% verbatim %}{{ resource('css/main.css') }}{% endverbatim %}">
+{% endfilter %}</pre>
+
+	<p>
+		You should use this Twig function on all your media, for example CSS, JavaScript and Images. Additionally even your local page links 
+		should use the resource function, just with an additional option:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+<a href="{% verbatim %}{{ resource('about.html', 'page') }}{% endverbatim %}">
+{% endfilter %}</pre>
+
+	<p>
+		This allows Fourstatic to rewrite you local page links in case your editing one of them in your development directory. More about that later.
+	</p>
+	
+	<h2>Existance:</h2>
+	
+	<p>
+		If you're not sure if a resource really exists, or you're just not trusting yourself to never delete a resource that's still used somewhere, 
+		you can test that pretty easily like this:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+{% verbatim %}{% if exists('img/noise.png') %}
+	<img src="{{ resource('img/noise.png') }}">
+{% else %}
+	Image not found!
+{% endif %}{% endverbatim %}">
+{% endfilter %}</pre>
+
+	<p>This has of course all the paths checked where the resource function would serach for it, like for example parent directories or the development directory.</p>
+	
+	<h2>Thumbnails:</h2>
+	
+	<p>
+		A very often used feature of Content Management Systems is to create smaller thumbnails of your uploaded images. You can create them 
+		with Fourstatic, as well. Internally Fourstatic uses the <a href="http://phpthumb.gxdlabs.com/">PHPThumb</a> library to achive this feature.
+		Here's how to create a thumbnail of an image:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+<img src="{% verbatim %}{{ resource('img/myimage.jpg', 'resize:50x50') }}{% endverbatim %}">
+{% endfilter %}</pre>
+
+	<h3>Some examples:</h3>
+	<p>
+		<small>resize:300x100</small><br />
+		<img src="{{ resource('img/paragliding.jpg', 'resize:300x100') }}">
+	</p>
+	<p>
+		<small>resize:600x200 (with fixed css width 300x100)</small><br />
+		<img src="{{ resource('img/paragliding.jpg', 'resize:600x200') }}" style="width:300px;height:100px">
+	</p>
+	<p>
+		<small>resize-adaptive:300x100</small><br />
+		<img src="{{ resource('img/paragliding.jpg', 'resize-adaptive:300x100') }}">
+	</p>
+	<p>
+		<small>resize-crop:300x100</small><br />
+		<img src="{{ resource('img/paragliding.jpg', 'resize-crop:300x100') }}">
+	</p>
+
+	<h2>Resource compilation:</h2>
+	
+	<p>
+		Fourstatic is able to compile SASS and LESS into CSS. This means you can use all the cool features of those CSS alternatives 
+		without having to compile them on your own. All you have to do is include them with the resource function:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+<link rel="stylesheet" href="{% verbatim %}{{ resource('css/build.scss') }}{% endverbatim %}">
+{% endfilter %}</pre>
+
+	<p>Additionally, Fourstaic is able to compile CoffeeScript into JavaScript in the same way:</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+<script src="{% verbatim %}{{ resource('js/main.coffee') }}{% endverbatim %}"></script>
+{% endfilter %}</pre>
+
+	<h2>Data storage:</h2>
+	
+	<p>
+		Fourstatic has a very powerfull system to organize data individually from your HTML markup. You can use quite a lot of different formats to
+		store your data. The idea is that you can use whatever fits you best. Here's a list of supported formats: JSON, YAML, XML, CSV and PHP. For the
+		next examples we will use JSON, but you're free to use whatever suits you best. Data is automatically loaded into your HTML template if you
+		follow our naming convention. There are basically two places where you can store data, either in a single file called "data.json" where "json"
+		is your prefered file format or inside a directory called data.
+	</p>
+	
+	<p>
+		Let's have a look at how to store data and use in a template. First, this is our data.json file placed inside the "pages" directory so that
+		all pages, even in subdirectories, can access it.
+	</p>
+	
+	<pre class="prettyprint lang-json">{% filter escape %}
+{
+	"author": "Fredi Bach",
+	"homepage": "http://fredibach.ch/"
+}
+{% endfilter %}</pre>
+
+	<p>All data is stored in a Twig variable called "data", so we can use it like this in our pages:</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+{% verbatim %}Author: {{ data.author }} - Homepage: {{ data.homepage }}{% endverbatim %}
+{% endfilter %}</pre>
+
+	<p>
+		If we store data in a directory with the name "data", the filename is used as a key for the data variable. So 
+		as an example if we put the above JSON data into a file called "copyright.json", it can be accessed like this:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+{% verbatim %}Author: {{ data.copyright.author }} - 
+Homepage: {{ data.copyright.homepage }}{% endverbatim %}
+{% endfilter %}</pre>
+
+	<p>
+		Now if we have to store tons of data, there's another way, we can create an additional directory inside the data directory.
+		For example if we have a blog, we could create a directory called "blog" inside the data directory with a data file inside it 
+		called "data.json" that contains all data. Inside that same directory we can than store additional blog related media, like for example images
+		and PDFs. Have a look at the blog example that comes with the download to get a better idea.
+	</p>
+	
+	<h2>File content:</h2>
+	
+	<p>
+		Sometimes a piece of content is so large, that it doesn't make sense to store it inside a JSON or other data format, it would be much
+		better to store in inside a HTML or a Markdown file, or even a PHP file for more dynamic content. Well, you sure guessed it, there's a way
+		to do that. If you put the string "-file" at the end of a data key and the filename into the value, Fourstatic will look into the directory 
+		and read that file if it's there. The ontent is than stored in a variable that has the "-file" part removed. Here's an example as it's used 
+		in the blog example that comes with the download, the files content would than be avialable as "data.content":
+	</p>
+	
+	<pre class="prettyprint lang-json">{% filter escape %}
+[
+	{
+		"date": "2013-04-22",
+		"author": "Fredi Bach",
+		"title": "Test News 3",
+		"content-file": "2013-04-22.md",
+		"slug": "test3"
+	}
+	{
+		"date": "2013-04-20",
+		"author": "Fredi Bach",
+		"title": "Test News 1",
+		"content-file": "2013-04-20.html",
+		"slug": "test1"
+	}
+]
+{% endfilter %}</pre>
+
+	<h2>External API:</h2>
+	
+	<p>
+		Fourstatic is able to load external API content, as well. Currently only JSON APIs are supported, but we may add more in the future. 
+		The API is added similarly as file content, just replace the "-file" addon with "-jsonapi". Here's an example:
+	</p>
+	
+	<pre class="prettyprint lang-json">{% filter escape %}
+{
+	"tweets-jsonapi": "https://api.twitter.com/1/statuse..."
+}
+{% endfilter %}</pre>
+
+	<h2>The "where" filter:</h2>
+	
+	<p>
+		Fourstatic has an additional filter added to Twig that makes it possible to filter your data by some specified value. For example in the following links data
+		we added a variable "visible" to each link data and only display those that have a "1" set, this way we can hide links that we currently don't want to display,
+		but that we still want stored in the data array:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+{% verbatim %}{% for item in data.links|where_visible_is_1 %}
+<p>
+	<a href="{{ item.url }}">{{ item.title }}</a>
+	<br />
+	{{ item.desc }}
+</p>
+{% endfor %}{% endverbatim %}
+{% endfilter %}</pre>
+
+	<h2>Order by "filter":</h2>
+	
+	<p>
+		Sometimes you have your data in an chaotic fashion or with an order that you don't want to use. In such cases, you can use the
+		special "orderby" Twig filter that comes with Fourstatic. Here's an example where we sort the link array by "title":
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}
+{% verbatim %}{% for item in data.links|orderby_title %}
+<p>
+	<a href="{{ item.url }}">{{ item.title }}</a>
+	<br />
+	{{ item.desc }}
+</p>
+{% endfor %}{% endverbatim %}
+{% endfilter %}</pre>
+
+	<p>
+		If you want to combine the "orderby" and the "where" filter, add the "where" filter first, especially if you have a big data set, as
+		ordering is much faster with smaller data sets.
+	</p>
+	
+	<h2>Slugs:</h2>
+	
+	<p>
+		In the blog example that comes with the download, the blog has a main page that shows all entries and if you click on one of the entries,
+		the detail pages is opened. This feature is achieved with the slug variable. Let's say we have a page with the name "blog.html", the slug variable will
+		be set if you link to it like this: "blog--myslug.html". This opens the possibility to create list/detail combinations and other smart stuff.
+	<p>
+	
+	<h2>404 page:</h2>
+	
+	<p>If there's a "404.html" page inside the "pages" directory and the user tries to open a page that doesn't exists, that 404 page will be displayed.</p>
+	
+	<h2>The development directory:</h2>
+	
+	<p>
+		If you want to make small to medium changes on your webpage, it's often easiest to work live on those files and edit them directly
+		on your FTP account. This is of course quite dangerous, as you could introduce an error that is visible to all your visitors, not
+		really something you want to do. Fourstatic solves this problem with a development directory. All changes made inside that directory
+		are only visible to you and don't affect what your visitors see. You can add completely new files and directories or just edit files from
+		your live directory. As soon as you're happy with your changes, all you have to do is call
+		a special merge script that is supplied with Fourstatic to transfer the new files and changed files to the live directory.
+	</p>
+	
+{% endblock %}

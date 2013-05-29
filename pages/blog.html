@@ -1,0 +1,29 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+	
+	<h2>Blog:</h2>
+	
+	<p>
+		Get the latest news of what's happening with and around Fourstatic.
+	</p>
+	
+	{% for blogpost in data.blog %}
+		{% if (slug == '' or slug == blogpost.slug) %}
+	        <div class="blogpost">
+				<h3><a href="blog--{{ blogpost.slug }}.html">{{ blogpost.title }}</a></h3>
+				<div class="date">{{ blogpost.date }} by {{ blogpost.author }}</div>
+				{% if slug != '' %}
+				<div>{{ blogpost.content|raw }}</div>
+				{% else %}
+				<p class="short">
+					{{ blogpost.short }}
+					<br />
+					<small><a href="blog--{{ blogpost.slug }}.html">More ...</a></small>
+				</p>
+				{% endif %}
+			</div>
+		{% endif %}
+    {% endfor %}
+	
+{% endblock %}

@@ -1,0 +1,7 @@
+{% block navigation %}
+	<ul>
+    {% for item in data.nav %}
+        <li><a {% if (item.url == page or page == '' and item.url == 'index.html') %} class="active"{% endif %} href="{{ resource(item.url, 'page') }}">{{ item.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

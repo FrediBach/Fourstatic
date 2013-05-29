@@ -1,0 +1,4 @@
+Options FollowSymlinks
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/mod_status$ [NC]
+RewriteRule pages/(.*)\.html$ fourstatic/fourstatic.php?page=$1.html
