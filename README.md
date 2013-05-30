@@ -5,7 +5,7 @@
 Fourstatic helps you create static webpages that rule! It's a no-cms solution based on the Twig templating engine. 
 We created something super simple and lightweight, that makes your work so much easier.
 
-- Version: `0.1`
+- Version: `0.1.x`
 - Release date: `29. 5. 2013`
 - [Homepage & Documentation](http://fourstatic.com/)
 

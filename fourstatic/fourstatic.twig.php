@@ -36,6 +36,24 @@ $filter = new Twig_SimpleFilter('where_*_is_*', function ($var, $state, $data) {
 });
 $twig->addFilter($filter);
 
+// The **autolink** filter converts text links into real clickable HTML links:
+
+$filter = new Twig_SimpleFilter('autolink', function ($string) {
+	
+	if (is_string($string)){
+		$ret = ' ' . $string;
+	    $ret = preg_replace("#(^|[\n ])([\w]+?://[\w]+[^ \"\n\r\t<]*)#ise", "'\\1<a href=\"\\2\" >\\2</a>'", $ret);
+	    $ret = preg_replace("#(^|[\n ])((www|ftp)\.[^ \"\t\n\r<]*)#ise", "'\\1<a href=\"http://\\2\" >\\2</a>'", $ret);
+	    $ret = preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $ret);
+	    $ret = substr($ret, 1);
+		$string = $ret;
+	}
+	
+	return $string;
+}, array('pre_escape' => 'html', 'is_safe' => array('html')));
+$twig->addFilter($filter);
+
+
 // The **exists** function checks if a file exists:
 
 $function = new Twig_SimpleFunction('exists', function ($res) {

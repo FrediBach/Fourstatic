@@ -4,9 +4,13 @@
 		
 	<h2>Tweets:</h2>
 	
+	<p>This is a demo of the API functionality of Fourstatic. It loads and displays the latest Twitter messages of my account.</p>
+	
+	<hr />
+	
 	{% for item in data.tweets %}
 	<p>
-		{{ item.text }}
+		{{ item.text|autolink }}
 		<br />
 		<small>{{ item.created_at }}</small>
     </p>
