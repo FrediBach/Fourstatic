@@ -22,12 +22,48 @@ class Fourstatic {
 	// The **readDataFiles** method reads data from local files and external JSON API's for all keys that have the "-file" or "-jsonapi" suffixes.
 	
 	public static function readDataFiles($dir, $data){
-		if (count($data) > 0){
+		
+		if (is_array($data) && count($data) > 0){
 			foreach($data as $k => $v){
 				
 				if (substr($k, -5) == '-file'){
+
+					$fileparts = pathinfo($v);
 					$newk = substr($k, 0, -5);
-					$data[$newk] = file_get_contents($dir.'/'.$v);
+
+					if ($fileparts['extension'] == 'php'){
+						$data[$newk] = file_get_contents(ROOTURL.'/'.$dir.'/'.$v);
+					} else {
+						$data[$newk] = file_get_contents($dir.'/'.$v);
+					}
+
+					if ($fileparts['extension'] == 'md'){
+						$data[$newk] = Markdown($data[$newk]);
+					}
+					
+				} else if (substr($k, -6) == '-files'){
+					
+					$newk = substr($k, 0, -6);
+					$files = scandir($dir.'/'.$v);
+					
+					$subdata = array();
+					if (count($files) > 0){
+						foreach($files as $f){
+							if ($f != '.' && $f != '..'){
+								$fp = pathinfo($f);
+								$subdata[] = array(
+									'file' => $f,
+									'filename' => $fp['filename'],
+									'extension' => $fp['extension'],
+									'size' => filesize($dir.'/'.$v.'/'.$f),
+									'modified' => filemtime($dir.'/'.$v.'/'.$f)
+								);
+							}
+						}
+					}
+					
+					$data[$newk] = $subdata;
+					
 				} else if (substr($k, -8) == '-jsonapi'){
 					
 					$newk = substr($k, 0, -8);
@@ -37,61 +73,27 @@ class Fourstatic {
 					if (!file_exists($cachefile) || filectime($cachefile) <= $expiretime){
 						$stream = @file_get_contents($v);
 						$json = @json_decode(trim($stream), true);
-						
+
 						if ($json != NULL){
 							$data[$newk] = $json;
 							file_put_contents($cachefile, $stream);
 						}
+
 					} else {
 						$data[$newk] = @json_decode(trim(file_get_contents($cachefile)), true);
 					}
 
 				}
-
+				
 				if (is_array($v) && count($v) > 0){
-					foreach($v as $k2 => $v2){
-						
-						if (substr($k2, -5) == '-file'){
-
-							$fileparts = pathinfo($v2);
-							$newk = substr($k2, 0, -5);
-
-							if ($fileparts['extension'] == 'php'){
-								$data[$k][$newk] = file_get_contents(ROOTURL.'/'.$dir.'/'.$v2);
-							} else {
-								$data[$k][$newk] = file_get_contents($dir.'/'.$v2);
-							}
-
-							if ($fileparts['extension'] == 'md'){
-								$data[$k][$newk] = Markdown($data[$k][$newk]);
-							}
-							
-						} else if (substr($k2, -8) == '-jsonapi'){
-							
-							$newk = substr($k2, 0, -8);
-							$cachefile = 'cache/api/'.md5($v2).'.json';
-							
-							$expiretime = time() - 1*60*60; // Expire Time (1h)
-							if (!file_exists($cachefile) || filectime($cachefile) <= $expiretime){
-								$stream = @file_get_contents($v2);
-								$json = @json_decode(trim($stream), true);
-
-								if ($json != NULL){
-									$data[$k][$newk] = $json;
-									file_put_contents($cachefile, $stream);
-								}
-
-							} else {
-								$data[$k][$newk] = @json_decode(trim(file_get_contents($cachefile)), true);
-							}
-
-						}
-
-					}
+					$data[$k] = self::readDataFiles($dir, $v);
 				}
+
 			}
 		}
+		
 		return $data;
+		
 	}
 	
 	// The **parseJSONFile** method parses JSON files.

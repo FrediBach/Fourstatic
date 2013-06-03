@@ -185,6 +185,26 @@ Homepage: {{ data.copyright.homepage }}{% endverbatim %}
 ]
 {% endfilter %}</pre>
 
+	<h2>Directory listing:</h2>
+	
+	<p>
+		If you put the string "-files" at the end of a data key and the directory name into the value, Fourstatic will look into the directory 
+		and add all files together with some information about the file into an array. Each entry in the array will have the following keys: file, 
+		filename, extension, size and modified. Modified contains the date when the file was uploaded or modified.
+	</p>
+	
+	<pre class="prettyprint lang-json">{% filter escape %}
+[
+	{
+		"date": "2013-04-26",
+		"author": "Fredi Bach",
+		"title": "Whatever Album",
+		"short": "Cool stuff.",
+		"images-files": "albums/whatever"
+	}
+]
+{% endfilter %}</pre>
+
 	<h2>External API:</h2>
 	
 	<p>
