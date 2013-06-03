@@ -33,7 +33,10 @@ if (isset($_GET['page']) && $_GET['page'] != ''){
 		$pagesplit = explode('--', substr($page, 0, -5));
 		if (file_exists(PAGESDIR.'/'.$pagesplit[0].'.html') || ($ip == DEVIP && file_exists(DEVDIR.'/'.$pagesplit[0].'.html'))){
 			$page = $pagesplit[0].'.html';
-			$slug = $pagesplit[1];
+			$slug = '';
+			if (isset($pagesplit[1])){
+				$slug = $pagesplit[1];
+			}
 		}
 	}
 } else {
