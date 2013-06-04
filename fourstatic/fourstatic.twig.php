@@ -226,17 +226,22 @@ $function = new Twig_SimpleFunction('resource', function ($res, $opt = '' ) {
 		}
 	}
 	
+	
 	if (!$fromdev){
-		if ($pageparts['dirname'] != '.' && !file_exists($pageparts['dirname'].'/'.$res)){
-			$res = '../'.$res;
-			$parentdir = dirname($pageparts['dirname']);
-			if ($parentdir != '.' && !file_exists($parentdir.'/'.$res)){
-				$res = '../'.$res;
-			}
-		}
+		$res = fixPath($res, $pageparts['dirname']);
 	}
 	
 	return $res;
 	
 });
 $twig->addFunction($function);
+
+
+function fixPath($res, $dir){
+	if ($dir != '.' && !file_exists($dir.'/'.$res)){
+		$res = '../'.$res;
+		$parentdir = dirname($dir);
+		$res = fixPath($res, $parentdir);
+	}
+	return $res;
+}
