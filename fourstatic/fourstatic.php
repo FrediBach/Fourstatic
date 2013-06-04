@@ -34,7 +34,7 @@ if (isset($_GET['page']) && $_GET['page'] != ''){
 	$page = $_GET['page'];
 	if (substr($page,-5) == '.html'){
 		$pagesplit = explode('--', substr($page, 0, -5));
-		if (file_exists(PAGESDIR.'/'.$pagesplit[0].'.html') || ($ip == DEVIP && file_exists(DEVDIR.'/'.$pagesplit[0].'.html'))){
+		if (file_exists(PAGESDIR.'/'.$pagesplit[0].'.html') || ($_SERVER['REMOTE_ADDR'] == DEVIP && file_exists(DEVDIR.'/'.$pagesplit[0].'.html'))){
 			$page = $pagesplit[0].'.html';
 			$slug = '';
 			if (isset($pagesplit[1])){
