@@ -49,7 +49,7 @@ class Fourstatic {
 					$subdata = array();
 					if (count($files) > 0){
 						foreach($files as $f){
-							if ($f != '.' && $f != '..'){
+							if ($f != '.' && $f != '..' && strpos($f, '.resize.') === false && strpos($f, '.resize-adaptive.') === false && strpos($f, '.resize-crop.') === false){
 								$fp = pathinfo($f);
 								$subdata[] = array(
 									'file' => $f,

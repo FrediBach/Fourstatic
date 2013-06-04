@@ -53,6 +53,17 @@ $filter = new Twig_SimpleFilter('autolink', function ($string) {
 }, array('pre_escape' => 'html', 'is_safe' => array('html')));
 $twig->addFilter($filter);
 
+// The **human_filesize** filter converts an integer representing bytes into a human readable format:
+
+$filter = new Twig_SimpleFilter('human_filesize', function ($bytes) {
+	
+	$types = array( 'B', 'KB', 'MB', 'GB', 'TB' );
+    for( $i = 0; $bytes >= 1024 && $i < ( count( $types ) -1 ); $bytes /= 1024, $i++ );
+    return( round( $bytes, 2 ) . " " . $types[$i] );
+	
+});
+$twig->addFilter($filter);
+
 
 // The **exists** function checks if a file exists:
 
