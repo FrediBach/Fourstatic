@@ -44,25 +44,27 @@ class Fourstatic {
 				} else if (substr($k, -6) == '-files'){
 					
 					$newk = substr($k, 0, -6);
-					$files = scandir($dir.'/'.$v);
+					if (file_exists($dir.'/'.$v) && is_dir($dir.'/'.$v)){
+						$files = scandir($dir.'/'.$v);
 					
-					$subdata = array();
-					if (count($files) > 0){
-						foreach($files as $f){
-							if ($f != '.' && $f != '..' && strpos($f, '.resize.') === false && strpos($f, '.resize-adaptive.') === false && strpos($f, '.resize-crop.') === false){
-								$fp = pathinfo($f);
-								$subdata[] = array(
-									'file' => $f,
-									'filename' => $fp['filename'],
-									'extension' => $fp['extension'],
-									'size' => filesize($dir.'/'.$v.'/'.$f),
-									'modified' => filemtime($dir.'/'.$v.'/'.$f)
-								);
+						$subdata = array();
+						if (count($files) > 0){
+							foreach($files as $f){
+								if ($f != '.' && $f != '..' && strpos($f, '.resize.') === false && strpos($f, '.resize-adaptive.') === false && strpos($f, '.resize-crop.') === false){
+									$fp = pathinfo($f);
+									$subdata[] = array(
+										'file' => $f,
+										'filename' => $fp['filename'],
+										'extension' => $fp['extension'],
+										'size' => filesize($dir.'/'.$v.'/'.$f),
+										'modified' => filemtime($dir.'/'.$v.'/'.$f)
+									);
+								}
 							}
 						}
-					}
 					
-					$data[$newk] = $subdata;
+						$data[$newk] = $subdata;
+					}
 					
 				} else if (substr($k, -8) == '-jsonapi'){
 					
