@@ -64,6 +64,73 @@ $filter = new Twig_SimpleFilter('human_filesize', function ($bytes) {
 });
 $twig->addFilter($filter);
 
+// The **paginate** filter selects a certain number of entries with a certain offset based on the slug:
+
+$filter = new Twig_SimpleFilter('paginate_*', function ($limit, $data) {
+	
+	global $slug;
+	$page = $slug;
+	
+	if (is_numeric($limit)){
+		
+	
+		if (!is_numeric($page)){
+			$page = 1;
+		}
+	
+		$from = ($page-1) * $limit;
+		
+		return array_slice($data, $from, $limit);
+	
+	} else {
+		return $data;
+	}
+	
+});
+$twig->addFilter($filter);
+
+// 
+
+function is_numeric_test($item){
+    return is_numeric($item);
+}
+$twig->addTest('numeric', new Twig_Test_Function('is_numeric_test'));
+
+// The **prev** function create a link for the previous page in a pagination:
+
+$function = new Twig_SimpleFunction('prev', function ($data, $limit) {
+	
+	global $page, $slug;
+	
+	$newpage = false;
+	
+	if (is_numeric($slug) && $slug > 1){
+		$newpage =  str_replace('.html', '--'.($slug-1).'.html', $page);
+	}
+	
+	return $newpage;
+	
+});
+$twig->addFunction($function);
+
+// The **next** function create a link for the next page in a pagination:
+
+$function = new Twig_SimpleFunction('next', function ($data, $limit) {
+	
+	global $page, $slug;
+	
+	$newpage = false;
+	
+	if (is_numeric($slug) && ($slug)*$limit < count($data)){
+		$newpage =  str_replace('.html', '--'.($slug+1).'.html', $page);
+	} else if ($slug == '' && count($data) > $limit){
+		$newpage =  str_replace('.html', '--2.html', $page);
+	}
+	
+	return $newpage;
+	
+});
+$twig->addFunction($function);
 
 // The **exists** function checks if a file exists:
 
