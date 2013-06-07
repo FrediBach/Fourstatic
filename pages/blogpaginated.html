@@ -1,0 +1,36 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+	
+	<h2>Blog:</h2>
+	
+	<p>
+		Get the latest news of what's happening with and around Fourstatic.
+	</p>
+	
+	{% for blogpost in data.blog|paginate_5 %}
+		{% if (slug == '' or slug is numeric or slug == blogpost.slug) %}
+	        <div class="blogpost">
+				<h3><a href="blogpaginated--{{ blogpost.slug }}.html">{{ blogpost.title }}</a></h3>
+				<div class="date">{{ blogpost.date }} by {{ blogpost.author }}</div>
+				{% if slug != '' and slug is not numeric %}
+				<div>{{ blogpost.content|raw }}</div>
+				{% else %}
+				<p class="short">
+					{{ blogpost.short }}
+					<br />
+					<small><a href="blogpaginated--{{ blogpost.slug }}.html">More ...</a></small>
+				</p>
+				{% endif %}
+			</div>
+		{% endif %}
+    {% endfor %}
+	
+	{% if slug == '' or slug is numeric %}
+	<p>
+		{% if prev() %}<a href="{{ prev() }}">[ newer entries ]</a>{% endif %} 
+		{% if next() %}<a href="{{ next() }}">[ older entries ]</a>{% endif %}
+	</p>
+	{% endif %}
+	
+{% endblock %}

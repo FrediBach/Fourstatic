@@ -52,6 +52,10 @@ if (!file_exists(PAGESDIR.'/'.$page)){
 	}
 }
 
+// Create a global pagination array to simplify the pagination functionality:
+
+$pagination = array();
+
 // Include additional Twig Functions and Filters that are unique to Fourstatic:
 
 require 'fourstatic.twig.php';

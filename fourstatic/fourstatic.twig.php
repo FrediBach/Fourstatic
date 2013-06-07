@@ -68,17 +68,20 @@ $twig->addFilter($filter);
 
 $filter = new Twig_SimpleFilter('paginate_*', function ($limit, $data) {
 	
-	global $slug;
+	global $slug, $pagination;
 	$page = $slug;
 	
 	if (is_numeric($limit)){
-		
 	
 		if (!is_numeric($page)){
 			$page = 1;
 		}
 	
 		$from = ($page-1) * $limit;
+		
+		$pagination['limit'] = $limit;
+		$pagination['data'] = $data;
+		$pagination['page'] = $page;
 		
 		return array_slice($data, $from, $limit);
 	
@@ -89,7 +92,7 @@ $filter = new Twig_SimpleFilter('paginate_*', function ($limit, $data) {
 });
 $twig->addFilter($filter);
 
-// 
+// Test if data is numeric:
 
 function is_numeric_test($item){
     return is_numeric($item);
@@ -98,14 +101,18 @@ $twig->addTest('numeric', new Twig_Test_Function('is_numeric_test'));
 
 // The **prev** function create a link for the previous page in a pagination:
 
-$function = new Twig_SimpleFunction('prev', function ($data, $limit) {
+$function = new Twig_SimpleFunction('prev', function () {
 	
-	global $page, $slug;
+	global $page, $slug, $pagination;
 	
 	$newpage = false;
 	
-	if (is_numeric($slug) && $slug > 1){
-		$newpage =  str_replace('.html', '--'.($slug-1).'.html', $page);
+	if (is_numeric($slug) && $slug > 1 && isset($pagination['page'])){
+		if ($slug > 2){
+			$newpage =  str_replace('.html', '--'.($slug-1).'.html', $page);
+		} else {
+			$newpage = $page;
+		}
 	}
 	
 	return $newpage;
@@ -115,16 +122,18 @@ $twig->addFunction($function);
 
 // The **next** function create a link for the next page in a pagination:
 
-$function = new Twig_SimpleFunction('next', function ($data, $limit) {
+$function = new Twig_SimpleFunction('next', function () {
 	
-	global $page, $slug;
+	global $page, $slug, $pagination;
 	
 	$newpage = false;
 	
-	if (is_numeric($slug) && ($slug)*$limit < count($data)){
-		$newpage =  str_replace('.html', '--'.($slug+1).'.html', $page);
-	} else if ($slug == '' && count($data) > $limit){
-		$newpage =  str_replace('.html', '--2.html', $page);
+	if (isset($pagination['page'])){
+		if (is_numeric($slug) && ($slug)*$pagination['limit'] < count($pagination['data'])){
+			$newpage =  str_replace('.html', '--'.($slug+1).'.html', $page);
+		} else if ($slug == '' && count($pagination['data']) > $pagination['limit']){
+			$newpage =  str_replace('.html', '--2.html', $page);
+		}
 	}
 	
 	return $newpage;
