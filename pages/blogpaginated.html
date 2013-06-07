@@ -8,7 +8,7 @@
 		Get the latest news of what's happening with and around Fourstatic.
 	</p>
 	
-	{% for blogpost in data.blog|paginate_5 %}
+	{% for blogpost in data.blogg|where_active_is_yes|orderby_date_desc|paginate_5 %}
 		{% if (slug == '' or slug is numeric or slug == blogpost.slug) %}
 	        <div class="blogpost">
 				<h3><a href="blogpaginated--{{ blogpost.slug }}.html">{{ blogpost.title }}</a></h3>

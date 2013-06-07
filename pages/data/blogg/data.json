@@ -1,0 +1,110 @@
+[
+	{
+		"date": "2013-04-26",
+		"author": "Fredi Bach",
+		"title": "Test Post 1",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-1",
+		"active": "yes"
+	},
+	{
+		"date": "2013-04-25",
+		"author": "Fredi Bach",
+		"title": "Test Post 2",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-2",
+		"active": "no"
+	},
+	{
+		"date": "2013-04-24",
+		"author": "Fredi Bach",
+		"title": "Test Post 3",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-3",
+		"active": "yes"
+	},
+	{
+		"date": "2013-04-23",
+		"author": "Fredi Bach",
+		"title": "Test Post 4",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-4",
+		"active": "yes"
+	},
+	{
+		"date": "2013-04-22",
+		"author": "Fredi Bach",
+		"title": "Test Post 5",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-5",
+		"active": "no"
+	},
+	{
+		"date": "2013-04-21",
+		"author": "Fredi Bach",
+		"title": "Test Post 6",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-6",
+		"active": "yes"
+	},
+	{
+		"date": "2013-04-20",
+		"author": "Fredi Bach",
+		"title": "Test Post 7",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-7",
+		"active": "yes"
+	},
+	{
+		"date": "2013-04-19",
+		"author": "Fredi Bach",
+		"title": "Test Post 8",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-8",
+		"active": "yes"
+	},
+	{
+		"date": "2013-04-18",
+		"author": "Fredi Bach",
+		"title": "Test Post 9",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-9",
+		"active": "no"
+	},
+	{
+		"date": "2013-04-17",
+		"author": "Fredi Bach",
+		"title": "Test Post 10",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-10",
+		"active": "no"
+	},
+	{
+		"date": "2013-04-16",
+		"author": "Fredi Bach",
+		"title": "Test Post 11",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-11",
+		"active": "no"
+	},
+	{
+		"date": "2013-04-15",
+		"author": "Fredi Bach",
+		"title": "Test Post 12",
+		"short": "The first early version is out, here's what's all about.",
+		"content-file": "first-release.md",
+		"slug": "test-post-12",
+		"active": "yes"
+	}
+]

@@ -6,14 +6,18 @@ $orderbyglobal = '';
 $filter = new Twig_SimpleFilter('orderby_*', function ($orderby, $data) {
 	
 	global $orderbyglobal;
-	$orderbyglobal = $orderby;
+	$orderbyglobal = explode('_', $orderby);
 	
 	function alphaSort($a, $b)
 	{
 		global $orderbyglobal;
-	    return strcmp(strtolower($a[$orderbyglobal]), strtolower($b[$orderbyglobal]));
+	    return strcmp(strtolower($a[$orderbyglobal[0]]), strtolower($b[$orderbyglobal[0]]));
 	}
 	usort($data, "alphaSort");
+	
+	if ($orderbyglobal[1] == 'desc'){
+		$data = array_reverse($data);
+	}
 	
 	return $data;
 });
