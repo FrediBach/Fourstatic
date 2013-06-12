@@ -258,6 +258,22 @@ Homepage: {{ data.copyright.homepage }}{% endverbatim %}
 		ordering is much faster with smaller data sets.
 	</p>
 	
+	<h2>Pagination:</h2>
+	
+	<p>
+		You can create a simple pagination into your list views. Inside the "pages" directory is an example of how that works. The page is called "blogpaginated.html". Basically you need to do
+		two things. First you need to add the "paginate_*" filter, for example "paginate_10" if you want to display a maximum of ten entries per page, and you need to add the paginate buttons
+		like this:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}{% verbatim %}{% if prev() %}<a href="{{ prev() }}">&lt;</a>{% endif %} 
+{% if next() %}<a href="{{ next() }}">&gt;</a>{% endif %}
+{% endverbatim %}{% endfilter %}</pre>
+
+	<p>
+		Again, check the example that comes with the download. Pagination of course works with filtered and ordered data. The only limitation is that you can only use it once on a page.
+	</p>
+	
 	<h2>Slugs:</h2>
 	
 	<p>

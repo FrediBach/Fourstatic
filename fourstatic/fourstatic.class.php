@@ -52,8 +52,13 @@ class Fourstatic {
 							foreach($files as $f){
 								if ($f != '.' && $f != '..' && strpos($f, '.resize.') === false && strpos($f, '.resize-adaptive.') === false && strpos($f, '.resize-crop.') === false){
 									$fp = pathinfo($f);
+									$isimage = false;
+									if (strtolower($fp['extension']) == 'jpg' || strtolower($fp['extension']) == 'jpeg' || strtolower($fp['extension']) == 'png' || strtolower($fp['extension']) == 'gif'){
+										$isimage = true;
+									}
 									$subdata[] = array(
 										'file' => $f,
+										'image' => $isimage,
 										'filename' => $fp['filename'],
 										'extension' => $fp['extension'],
 										'size' => filesize($dir.'/'.$v.'/'.$f),
@@ -79,6 +84,8 @@ class Fourstatic {
 						if ($json != NULL){
 							$data[$newk] = $json;
 							file_put_contents($cachefile, $stream);
+						} else {
+							touch($cachefile);
 						}
 
 					} else {

@@ -6,7 +6,8 @@
 		"short": "The first early version is out, here's what's all about.",
 		"content-file": "first-release.md",
 		"slug": "test-post-1",
-		"active": "yes"
+		"active": "yes",
+		"files-files": "demofiles"
 	},
 	{
 		"date": "2013-04-25",

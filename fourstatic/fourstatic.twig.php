@@ -27,6 +27,9 @@ $twig->addFilter($filter);
 
 $filter = new Twig_SimpleFilter('where_*_is_*', function ($var, $state, $data) {
 	
+	if ($state == 'false') $state = false;
+	if ($state == 'true') $state = true;
+	
 	$newdata = array();
 	if (count($data) > 0){
 		foreach($data as $k => $v){
