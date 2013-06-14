@@ -78,9 +78,16 @@ class Fourstatic {
 					
 					$expiretime = time() - 1*60*60; // Expire Time (1h)
 					if (!file_exists($cachefile) || filectime($cachefile) <= $expiretime){
-						$stream = @file_get_contents($v);
+						//$stream = @file_get_contents($v);
+						
+						$ch = curl_init($v);                                                                      
+						curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");                                                                                                                                     
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+						curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);                                                                                                                                                                                
+						$stream = curl_exec($ch);
+						
 						$json = @json_decode(trim($stream), true);
-
+						
 						if ($json != NULL){
 							$data[$newk] = $json;
 							file_put_contents($cachefile, $stream);

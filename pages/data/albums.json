@@ -1,0 +1,26 @@
+[
+	{
+		"date": "2013-04-26",
+		"author": "Fredi Bach",
+		"title": "Wings of Kilimanjaro",
+		"slug": "kili",
+		"short": "Hike and fly to the top of the Kilimanjaro.",
+		"images-files": "albums/wok"
+	},
+	{
+		"date": "2013-04-25",
+		"author": "Fredi Bach",
+		"title": "Various Photos",
+		"slug": "various",
+		"short": "A collection of various images.",
+		"images-files": "albums/various"
+	},
+	{
+		"date": "2013-04-24",
+		"author": "Fredi Bach",
+		"title": "Empty",
+		"slug": "empty",
+		"short": "An empty test directory.",
+		"images-files": "albums/empty"
+	}
+]

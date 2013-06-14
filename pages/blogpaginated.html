@@ -31,10 +31,12 @@
 						{% if blogpost.files|where_image_is_false %}
 						<div>
 							<h4>Downloads</h4>
+							<ul>
 							{% for file in blogpost.files|where_image_is_false %}
 								{% set path %}data/blogg/{{ blogpost['files-files'] }}/{{ file.file }}{% endset %}
-								<a href="{{ resource(path, 'resize-adaptive:100x100') }}">Download {{ file.filename }} ({{ file.extension }}, {{ file.size|human_filesize }})</a>
+								<li><a href="{{ resource(path, 'resize-adaptive:100x100') }}">Download {{ file.filename }} ({{ file.extension }}, {{ file.size|human_filesize }})</a></li>
 							{% endfor %}
+							</ul>
 						</div>
 						{% endif %}
 					{% endif %}
@@ -55,7 +57,7 @@
 		{% endif %}
     {% endfor %}
 	
-	{% if slug == '' or slug is numeric %}
+	{% if (slug == '' or slug is numeric) and (prev() or next()) %}
 	<hr />
 	<p>
 		{% if prev() %}<a href="{{ prev() }}">[ newer entries ]</a>{% endif %} 

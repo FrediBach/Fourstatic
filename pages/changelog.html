@@ -1,0 +1,19 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+		
+	<h2>Changelog:</h2>
+	
+	<p>This is a demo of the API functionality of Fourstatic. It loads and displays the latest commits from the Fourstatic Github repo.</p>
+	
+	<hr />
+	
+	{% for item in data.commits %}
+	<p>
+		{{ item.commit.message }}
+		<br />
+		<small>{{ item.commit.author.date }}</small>
+    </p>
+	{% endfor %}
+	
+{% endblock %}

@@ -1,0 +1,312 @@
+{% extends "themes/default.html" %}
+
+{% block textcontent %}
+	
+	<h2>Blog Tutorial:</h2>
+	<p>
+		In this tutorial you'll leran how to create a blog with Fourstatic. The tutorial will cover how to best organize your data,
+		how to create your one page template, how to filter your data, how to add pagination and how to add additional funtionality like
+		blog post images.
+	</p>
+	
+	<h3>Data Structure</h3>
+	
+	<p>
+		Creating your data structure is one of the most important task when creating a webpage with Fourstatic, at least if you want to
+		create something that goes beyond a very basic webpage. The better you structure your data, the easier it will be for you to maintain
+		your website.
+	</p>
+	
+	<p>
+		Here's the basic structure we're choosing:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}data/
+	blog/
+		data.json
+		posts/
+			2013-04-05-first-post.md
+			2013-04-11-second-post.md
+{% endfilter %}</pre>
+
+	<p>
+		Pretty simple. First we have created a "blog" directory inside the "data" directory. Inside that directory we have a JSON file that will 
+		hold all our posts basic data, than we have a directory for our posts where we save our Markdown based posts. Later we'll add another directory
+		for all our media, but first we'll create a very basic version of the blog.
+	</p>
+	
+	<p>
+		Now let's have a look at the data.json file:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}[
+	{
+		"date": "2013-04-05",
+		"author": "Fredi Bach",
+		"title": "Test Post 1",
+		"short": "Just a test post.",
+		"content-file": "posts/2013-04-05-first-post.md",
+		"slug": "test-post-1",
+		"active": "yes"
+	},
+	{
+		"date": "2013-04-11",
+		"author": "Fredi Bach",
+		"title": "Test Post 2",
+		"short": "Just another test post.",
+		"content-file": "2013-04-11-second-post.md",
+		"slug": "test-post-2",
+		"active": "yes"
+	}
+]
+{% endfilter %}</pre>
+
+	<p>
+		It's basically an array of hash tables where each array element is one post. Each post has the usual stuff stored, like post title, author, post date and of course the post content itself. 
+		For the post content we choose a Markdown file inside the "posts" directory. Additionaly we store if a post is active, this way we can hide a post anytime without actually deleting it and we have 
+		a slug stored that is used for the permalink url of each post.
+	</p>
+	
+	<p>
+		The post content files stored inside the "posts" directory are currently simple Markdown documents. You can of course use any other format that's supported by Fourstatic whenever needed. You can even 
+		skip extra files altogether and add the text inside the JSON file.
+	</p>
+	
+	<p>
+		Now this is of course only one way to structure your data, Fourstatic is pretty flexible and can work with many kind of data structures. For example we could make an "archive" option instead of
+		the "active" option. That way we could remove any pagination on our main page and create an archive page where we link the posts on a calendar view.
+	</p>
+	
+	<h3>A very basic blog</h3>
+	
+	<p>
+		Now as we have our basic data and data structure, let's create the blog page. We will call it blog.html and put it into the root of our "pages" directory. 
+		We're using our default page template so that we only have to add the content relevant stuff. Here's our first version:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}{% verbatim %}{% extends "themes/default.html" %}
+
+{% block textcontent %}
+
+<h2>Blog:</h2>
+
+{% for blogpost in data.blog %}
+
+	<h3>{{ blogpost.title }}</h3>
+	
+	<div class="meta">
+		{{ blogpost.date }} by {{ blogpost.author }}
+	</div>
+	
+	<div class="content">
+		{{ blogpost.content|raw }}
+	</div>
+	
+{% endfor %}
+
+{% endblock %}{% endverbatim %}{% endfilter %}</pre>
+	
+	<p>
+		That's it. our first working blog. Very limited, but it will display our blog posts.
+	</p>
+	
+	<h3>Use a slug to display a details view</h3>
+	
+	<p>
+		Each of our posts is currently fully displayed on our main blog page. Let's say our blog posts are very long, that will make our
+		visitors scroll a lot, maybe we should only display part of the message and than add a link to read the full post. We can achive that with
+		an url slug. We already added one to each of our posts and we already have an option "short" that we will use for our blog list. Here's how
+		we can achive that:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}{% verbatim %}{% extends "themes/default.html" %}
+
+{% block textcontent %}
+
+<h2>Blog:</h2>
+
+{% for blogpost in data.blog %}
+{% if (slug == '' or slug == blogpost.slug) %}
+
+	<h3>{{ blogpost.title }}</h3>
+
+	<div class="meta">
+		{{ blogpost.date }} by {{ blogpost.author }}
+	</div>
+	
+	<div class="content">
+	{% if slug != '' %}
+		{{ blogpost.content|raw }}
+	{% else %}
+		{{ blogpost.short }}
+		<br />
+		<a href="blog--{{ blogpost.slug }}.html">More ...</a>
+	{% endif %}
+	</div>
+
+{% endif %}
+{% endfor %}
+
+{% endblock %}{% endverbatim %}{% endfilter %}</pre>
+	
+	<p>
+		The slug is an automatically set variable that contains everything after the two dashes "--" and before the ".html" extension. It's very useful for these kind of stuff.
+	</p>
+	
+	<h3>Add pagination</h3>
+	
+	<p>
+		Right now we only have two posts, but if we're one of the hard working bloggers, we will have dozens of them, maybe even hundreds. We need to find a way to spread them 
+		onto many pages, we have to add a pagination. Fourstatic has a number of features to do that. Paginations will use the slug, and always add a number indicating the current
+		page. Here's our extended template:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}{% verbatim %}{% extends "themes/default.html" %}
+
+{% block textcontent %}
+
+<h2>Blog:</h2>
+
+{% for blogpost in data.blog|paginate_5 %}
+{% if (slug == '' or slug is numeric or slug == blogpost.slug) %}
+
+	<h3>{{ blogpost.title }}</h3>
+
+	<div class="meta">
+		{{ blogpost.date }} by {{ blogpost.author }}
+	</div>
+
+	<div class="content">
+	{% if slug != '' and slug is not numeric %}
+		{{ blogpost.content|raw }}
+	{% else %}
+		{{ blogpost.short }}
+		<br />
+		<a href="blog--{{ blogpost.slug }}.html">More ...</a>
+	{% endif %}
+	</div>
+
+{% endif %}
+{% endfor %}
+
+{% if (slug == '' or slug is numeric) and (prev() or next()) %}
+<div class="pagination">
+	{% if prev() %}
+		<a href="{{ prev() }}">[ newer entries ]</a>
+	{% endif %} 
+	{% if next() %}
+		<a href="{{ next() }}">[ older entries ]</a>
+	{% endif %}
+</div>
+{% endif %}
+
+{% endblock %}{% endverbatim %}{% endfilter %}</pre>	
+	
+	<p>
+		The first thing you will notice, is that we added a filter "paginate_5" to the data that is looped. This will tell Fourstatic that
+		we have a pagination where at most 5 entries are shown and filter the data accordingly. Next we have extended the first if statement
+		to include slugs that are generated by the pagination (remember, they are always numeric). The next if statement, the one that decides
+		if we're displaying the detail view or not, has to be extended as well to exclude those numeric slugs. The last part is where we display
+		our pagination links. We only display the links if there's a need for them, so only in the list view and only if there are older or newer entries.
+		The "prev" and "next" functions will always return false if there isn't a need for them, so we can easily achive that.
+	</p>
+	
+	<p>
+		That's it! We have now a working pagination and can add as many posts as we want.
+	</p>
+	
+	<h3>Filter and order our data</h3>
+	
+	<p>
+		Do you remember our JSON file? We added an option there that defines if a post is active or not. And it probably would be a good idea to sort our posts
+		based on the date option in case we're sloppy and don't add new entries in the correct order or if we have to change the date after we've already added the
+		entry. So there are two filters we should add to the looped data, "where_active_is_yes" that removes all posts that aren't active and "orderby_date_desc" that
+		orders the rest of the data by the date option in a descending order. Put thos two filters right before the "paginate_5" filter like this:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}{% verbatim %}data.blog|where_active_is_yes|orderby_date_desc|paginate_5{% endverbatim %}{% endfilter %}</pre>
+	
+	<h3>Add post images and downloads</h3>
+	
+	<p>
+		Currently we're using Markdown files for our blog contents. How about we add the possibility to add an unlimited amount of media files like images and downloads to our posts
+		by just adding an option to our JSON file that tells us in which directory the filkes are located? Sounds like that could be useful, let's do that. Let's first extend the JSON
+		file like this:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}[
+	{
+		"date": "2013-04-05",
+		"author": "Fredi Bach",
+		"title": "Test Post 1",
+		"short": "Just a test post.",
+		"content-file": "posts/2013-04-05-first-post.md",
+		"slug": "test-post-1",
+		"active": "yes",
+		"media-files": "media/demofiles"
+	},
+	{
+		"date": "2013-04-11",
+		"author": "Fredi Bach",
+		"title": "Test Post 2",
+		"short": "Just another test post.",
+		"content-file": "2013-04-11-second-post.md",
+		"slug": "test-post-2",
+		"active": "yes",
+		"media-files": ""
+	}
+]
+{% endfilter %}</pre>
+
+	<p>
+		As you can see, we've added a new option "media-files" to each entry. In the first entry, we added the directory "media/demofiles". This will tell
+		Fourstatic, to look into that directory for any files it finds there and populate an array called "media" with data related to those files. Here's
+		everything we will now know about each file:
+	</p>
+	
+	<ul>
+		<li>file: The full filename, for example "myimage.jpg"</li>
+		<li>image: Will tell us if this is an image or not</li>
+		<li>filename: The filename without extension</li>
+		<li>extension: The file extension, for example "jpg"</li>
+		<li>size: The filesize in bytes</li>
+		<li>modified: The date of the last modification of the file</li>
+	</ul>
+	
+	<p>
+		As you can see, we get quite a lot of useful information about our files. Let's use that to display an optional gallery and downloads list on our detail view. Add the code after this part:
+	</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}{% verbatim %}{{ blogpost.content|raw }}{% endverbatim %}{% endfilter %}</pre>
+	
+	<p>This is the extended detail view:</p>
+	
+	<pre class="prettyprint lang-xml">{% filter escape %}{% verbatim %}<div>{{ blogpost.content|raw }}</div>
+{% if blogpost.media %}
+	{% if blogpost.media|where_image_is_true %}
+	<div>
+		<h4>Images</h4>
+		{% for file in blogpost.media|where_image_is_true %}
+			{% set path %}data/blogg/{{ blogpost['media-files'] }}/{{ file.file }}{% endset %}
+			<img src="{{ resource(path, 'resize-adaptive:100x100') }}">
+		{% endfor %}
+	</div>
+	{% endif %}
+	{% if blogpost.media|where_image_is_false %}
+	<div>
+		<h4>Downloads</h4>
+		<ul>
+		{% for file in blogpost.media|where_image_is_false %}
+			{% set path %}data/blogg/{{ blogpost['media-files'] }}/{{ file.file }}{% endset %}
+			<li><a href="{{ resource(path, 'resize-adaptive:100x100') }}">Download {{ file.filename }} ({{ file.extension }}, {{ file.size|human_filesize }})</a></li>
+		{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+{% endif %}{% endverbatim %}{% endfilter %}</pre>
+
+	<p>
+		That's it. We have now a pretty functional blogging system and all we used are static files.
+	</p>
+	
+{% endblock %}
