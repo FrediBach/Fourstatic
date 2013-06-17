@@ -71,6 +71,20 @@ $filter = new Twig_SimpleFilter('human_filesize', function ($bytes) {
 });
 $twig->addFilter($filter);
 
+// The **offset** filter removes a specific amount of entries from the beginning of an array:
+
+$filter = new Twig_SimpleFilter('offset_*', function ($offset, $data) {
+	return array_slice($data, $offset);
+});
+$twig->addFilter($filter);
+
+// The **limit** filter limits the count of elements in an array to a specific number:
+
+$filter = new Twig_SimpleFilter('limit_*', function ($limit, $data) {
+	return array_slice($data, 0, $limit);
+});
+$twig->addFilter($filter);
+
 // The **paginate** filter selects a certain number of entries with a certain offset based on the slug:
 
 $filter = new Twig_SimpleFilter('paginate_*', function ($limit, $data) {
